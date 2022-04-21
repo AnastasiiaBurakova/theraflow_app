@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %} 
+
+    <div class="container">
+      
+      <p class="subtitle">
+        Please, choose your role.
+      </p>
+      <a class="button" href="{{url_for('starter')}}">
+          I am a therapist</a>
+      <a class="button" href="{{url_for('starter_client')}}">
+          I am a client</a>
+
+    </div>
+
+{% endblock %}
