@@ -1,5 +1,5 @@
-import flask
-from flask import Flask, render_template, request, abort 
+#import flask
+from flask import Flask, render_template, request, abort, redirect, url_for, flash
 from flask_login import LoginManager, login_user, login_required, current_user, logout_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
@@ -27,6 +27,7 @@ def load_user(user_id):
 
 class User():
     def __init__(self, username):
+        self.__dict__ = get_user_by_username(username)
         self.username = username
 
     def is_active(self):
@@ -70,22 +71,23 @@ def login():
 
         username = form.username.data
         password = form.password.data
-        if username in users and \
-            check_password_hash(users.get(username), password):
+        if username in get_all_usernames() and \
+           check_password_hash(get_user_by_username(username).get("Password"), password):
 
             user = User(username)
+            
 
             login_user(user)
 
-            flask.flash('Logged in successfully.')
+            flash('Logged in successfully.')
 
             next = request.args.get('next')
 
             if not is_safe_url(next):
                 return abort(400)
 
-            return flask.redirect(next or flask.url_for('my-profile'))
-    return flask.render_template('login.html', form=form)
+            return redirect(next or url_for('my_profile'))
+    return render_template('login.html', form=form)
 
 @app.route('/test')
 def test():
@@ -106,8 +108,7 @@ def starter_client():
 @app.route("/my-profile")   
 @login_required
 def my_profile():
-    username = current_user.username
-    return render_template('profile.html', user=username) 
+    return render_template('profile.html', user=current_user) 
 
 @app.route("/logout")
 @login_required
@@ -122,7 +123,7 @@ def create():
 
 @app.route("/request")   
 @login_required
-def request():
+def request_session():
     return render_template('request.html', user=get_user_by_username(auth.current_user())) 
 
 @app.route("/request_form")   
