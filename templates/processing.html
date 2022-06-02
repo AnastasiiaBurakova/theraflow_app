@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %} 
+
+    <div class="container">
+      
+      <p class="subtitle">
+        Thank you. You request is being processed. When a therapist accepts your request, you will be forwarded to your consultation room. 
+      </p>
+      <a class="button" href="{{url_for('my_profile')}}">
+        Cancel Request</a>
+
+    </div>
+
+{% endblock %}

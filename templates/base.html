@@ -13,7 +13,11 @@
           <a class="navbar-item has-text-weight-bold is-size-4 is-italic" href="{{url_for('register')}}">
            theraflow
           </a>
-      
+          {% if user %}
+          <a class="navbar-item" href="{{url_for('my_profile', handle=user)}}">
+            {{ user["Name"] }}
+            </a>
+           {% endif %} 
           <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>

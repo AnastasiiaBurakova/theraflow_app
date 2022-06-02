@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block content %} 
+
+    <div class="container">
+      
+      <p class="subtitle">
+        Please answer these questions so we can suggest the best therapist.
+      </p>
+        
+        <div class="field">
+          <label class="label">How would you describe your main concern?</label>
+          <div class="control">
+            <div class="select">
+              <select>
+                <option>Fears, Phobias, Anxiety</option>
+                <option>Eating and weight control</option>
+                <option>Stress, chronic pain</option>
+                <option>Grief</option>
+                <option>Sexual problems</option>
+                <option>Sleeping problems</option>
+                <option>Compulsive and addictive behavior</option>
+                <option>Relationships problems</option>
+                <option>I can't find my purpose</option>
+                <option>Career crisis</option>
+                <option>Integrative therapy</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+            <label class="label">What's your preferred method of communication with a therapist?</label>
+            <div class="control">
+              <div class="select">
+                <select>
+                  <option>Video Call</option>
+                  <option>Texting</option>
+                  <option>Voice Call</option>
+                  <option>All of the above</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Are you ready to have a consultation right now?</label>
+            <div class="control">
+              <div class="select">
+                <select>
+                  <option>Yes</option>
+                  <option>No</option>
+                </select>
+              </div>
+            </div>
+          </div>  
+        
+        <div class="field is-grouped">
+            <a class="button" href="{{url_for('processing')}}">
+                Submit</a>
+            <a class="button" href="{{url_for('my_profile')}}">
+                    Cancel</a>
+        </div>
+      </form>
+
+    </div>
+
+{% endblock %}

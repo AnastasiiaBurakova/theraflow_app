@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %} 
+
+<div class="columns">
+    <div class="column is-narrow">
+        <aside class="menu">
+            <ul class="menu-list">
+              <li><a>My Profile</a></li>
+              <li><a>My Bookings</a></li>
+              <li><a>Wallet</a></li>
+              <li><a>Session Room</a></li>
+              <li><a>My Requests</a></li>
+            </ul>
+          </aside>
+    </div>
+    <div class="column">
+        <div class="container">
+          <p class="subtitle">
+            My Profile.
+          </p>
+          <figure class="image is-128x128 mb-5">
+            <img src="{{ url_for('static', filename='static_profile_pics/'+user['Picture']) }}">
+          </figure>
+          <p class="subtitle">
+            Your First and Last name: {{ user["Name"] }}
+          </p>
+          <p class="subtitle">
+            Your age: {{ user["Age"] }}
+          </p>
+          <p class="subtitle">
+            Your email address: {{ user["Email"] }}
+          </p>
+          <p class="subtitle">
+            Your field of expertise: {{ user["Field"] }}
+          </p>
+          <p class="subtitle">
+            About you: {{ user["About"] }}
+          </p>
+          <a class="button" href="">
+            Edit Profile</a>
+
+        </div>
+        </div>
+
+
+  </div>
+
+
+{% endblock %}
