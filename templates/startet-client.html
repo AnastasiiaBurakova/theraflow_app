@@ -6,6 +6,18 @@
         To register an account, please fill in the data.
       </p>
 
+      <form method="POST" action="{{url_for('starter_client')}}">
+        <table>
+        {% for field in form %}
+            <tr>
+                <th>{{ field.label }}</th>
+                <td>{{ field }}</td>
+            </tr>
+        {% endfor %}    
+        </table>
+      </form>
+
+
       <div class="field">
         <label class="label">First and Last Name</label>
         <div class="control">

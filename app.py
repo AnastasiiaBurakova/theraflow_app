@@ -2,8 +2,8 @@
 from flask import Flask, render_template, request, abort, redirect, url_for, flash
 from flask_login import LoginManager, login_user, login_required, current_user, logout_user
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
-from data import get_users, get_user_by_username, get_all_usernames
+from wtforms import StringField, PasswordField, SubmitField, TextAreaField, IntegerField
+from data import get_users, get_user_by_username, get_all_usernames, create_user
 # from flask_httpauth import HTTPBasicAuth 
 from werkzeug.security import generate_password_hash, check_password_hash
 from urllib.parse import urlparse, urljoin
@@ -57,6 +57,13 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password')
     submit = SubmitField('Submit')
 
+class SignUpForm(FlaskForm):
+    username = StringField('Username')
+    name = StringField('Name')
+    about = TextAreaField('About')
+    age = IntegerField('Age')
+    password = PasswordField('Password')
+    submit = SubmitField('Submit')
 
 def is_safe_url(target):
     ref_url = urlparse(request.host_url)
@@ -71,6 +78,9 @@ def login():
 
         username = form.username.data
         password = form.password.data
+
+        user = get_user_by_username(username): 
+
         if username in get_all_usernames() and \
            check_password_hash(get_user_by_username(username).get("Password"), password):
 
@@ -91,19 +101,58 @@ def login():
 
 @app.route('/test')
 def test():
-    return render_template('test.html')        
+    return render_template('test.html')       
 
 @app.route('/')
+def welcome():
+    return render_template('welcome.html')     
+
+@app.route('/register')
 def register():
     return render_template('register.html')
 
-@app.route('/starter')
+@app.route('/starter', methods=['GET', 'POST'])
 def starter():
-    return render_template('starter.html')    
+    form = SignUpForm()
+    if form.validate_on_submit():
+        username = form.username.data
+        password_hash = generate_password_hash(form.password.data)
+        name = form.name.data
+        about = form.about.data
+        age = form.age.data
 
-@app.route('/startclient')
+        create_user(username, name, about, age, password_hash)
+
+        user = User(username)
+        login_user(user)
+        flask.flash('Logged in successfully.')
+        next = flask.request.args.get('next')
+        if not is_safe_url(next):
+            return flask.abort(400)
+        return flask.redirect(next or flask.url_for('my_profile'))    
+    return render_template('starter.html', form=form)    
+
+@app.route('/startclient', methods=['GET', 'POST'])
 def starter_client():
-    return render_template('startet-client.html')    
+    form = SignUpForm()
+    if form.validate_on_submit():
+        username = form.username.data
+        password_hash = generate_password_hash(form.password.data)
+        name = form.name.data
+        about = form.about.data
+        age = form.age.data
+
+        create_user(username, name, about, age, password_hash)
+
+
+        user = User(username)
+        login_user(user)
+        flask.flash('Logged in successfully.')
+        next = flask.request.args.get('next')
+        if not is_safe_url(next):
+            return flask.abort(400)
+        return flask.redirect(next or flask.url_for('my_profile'))    
+    return render_template('startet-client.html', form=form)    
 
 @app.route("/my-profile")   
 @login_required

@@ -52,3 +52,16 @@ test_user = {
 users = {
     "therapist": test_user
 }    
+
+def get_conn():
+    conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server}; SERVER='+server+';DATA='+data+';UID='+username+';PWD='+password)
+    return conn
+
+def create_user(username, name, about, age, password_hash):
+    conn = get_conn()
+    cursor = conn.cursor()
+    result = cursor.execute("""INSERT INTO Users ([Username], [Name], [About], [Age], [PasswordHash]))
+                        VALUES (?, ?, ?, ?, ?)""", username, name, about, age, password_hash)
+    conn.commit()
+    print(result)                    
+
