@@ -53,15 +53,20 @@ users = {
     "therapist": test_user
 }    
 
-def get_conn():
-    conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server}; SERVER='+server+';DATA='+data+';UID='+username+';PWD='+password)
-    return conn
 
-def create_user(username, name, about, age, password_hash):
-    conn = get_conn()
+def create_user(username, name, about, age, password, email, role):
+    conn = sqlite3.connect("theraflow.db")
     cursor = conn.cursor()
-    result = cursor.execute("""INSERT INTO Users ([Username], [Name], [About], [Age], [PasswordHash]))
-                        VALUES (?, ?, ?, ?, ?)""", username, name, about, age, password_hash)
+    result = cursor.execute("""INSERT INTO Users ([Username], [Name], [About], [Age], [Password], [Email], [Role])
+                        VALUES (?, ?, ?, ?, ?, ?, ?)""", [username, name, about, age, password, email, role])
     conn.commit()
+    conn.close()
+
     print(result)                    
 
+def reset_data_password(username, password_hash):
+    conn = get_conn()
+    cursor = conn.cursor()
+    result = cursor.execute(""" UPDATE Users SET PasswordHash=? WHERE Username=?""", password_hash, username)
+    conn.commit()
+    print(result)    

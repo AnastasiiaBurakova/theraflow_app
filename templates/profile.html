@@ -19,9 +19,11 @@
           <p class="subtitle">
             My Profile.
           </p>
+          {% if user['Picture'] %}
           <figure class="image is-128x128 mb-5">
             <img src="{{ url_for('static', filename='static_profile_pics/'+user['Picture']) }}">
           </figure>
+          {% endif %}
           <p class="subtitle">
             Your First and Last name: {{ user["Name"] }}
           </p>
